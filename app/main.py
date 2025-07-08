@@ -5,6 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 # import all schemas/classes from schemas.py file
+from app.utils import perform_translation
 import schemas
 import crud
 import models
@@ -42,7 +43,7 @@ def translate(request: schemas.TranslationRequest, background_tasks: BackgroundT
 def get_translate(task_id: int, db: Session = Depends(get_db)):
     task = crud.get_translation_task(db, task_id)
     if not task:
-        raise HTTPException(status_code=404, detail="task not found")]
+        raise HTTPException(status_code=404, detail="task not found")
     return { "task_id": task.id, "status": task.status, "translation": task.translations }
 
 @app.get('/translate/content/{task_id}')
