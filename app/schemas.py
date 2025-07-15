@@ -5,8 +5,8 @@ class TranslationRequest(BaseModel):
     text: str
     languages: List[str]
 
-class TranslationResponse(BaseModel):
-    task_id: str
+class TaskResponse(BaseModel):
+    task_id: int
 
 class TranslationStatus(BaseModel):
     task_id: str

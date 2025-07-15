@@ -99,8 +99,6 @@ celerybeat-schedule
 *.sage.py
 
 # Environments
-.env
-.env.*
 venv/
 .venv/
 env/
@@ -133,7 +131,6 @@ dmypy.json
 .pyright/
 
 # VS Code
-.vscode/
 
 # JetBrains IDEs
 .idea/
@@ -151,7 +148,6 @@ src/alembic/versions/*.pyo
 docker-compose.override.yml
 docker-compose.override.*
 *.env
-.env.*
 
 # Temporary files
 tmp/
@@ -179,3 +175,5 @@ fastapi/
 
 # Windows
 Thumbs.db
+config.bat
+node_modules

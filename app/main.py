@@ -1,3 +1,4 @@
+import utils.session
 from fastapi import FastAPI, BackgroundTasks, HTTPException, Request, Depends
 from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
@@ -9,7 +10,7 @@ from app.utils import perform_translation
 import schemas
 import crud
 import models
-from database import get_db, engine
+from database import get_db, engine, SessionLocal
 from typing import List
 import uuid
 # makes sure tables exist in database
@@ -33,7 +34,7 @@ templates = Jinja2Templates(directory="templates")
 def index(request: Request):
     return templates.TemplateResponse("index.html", { "request": request})
 
-@app.post('/translate', response_class=schemas.TranslationResponse)
+@app.post('/translate', response_class=schemas.TaskResponse)
 def translate(request: schemas.TranslationRequest, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
     task = crud.create_translation_task(db, request.text, request.languages)
     background_tasks.add_task(perform_translation, task.id, request.text, request.languages, db)
@@ -43,7 +44,7 @@ def translate(request: schemas.TranslationRequest, background_tasks: BackgroundT
 def get_translate(task_id: int, db: Session = Depends(get_db)):
     task = crud.get_translation_task(db, task_id)
     if not task:
-        raise HTTPException(status_code=404, detail="task not found")
+        raise HTTPException( status_code=404, detail="task not found")
     return { "task_id": task.id, "status": task.status, "translation": task.translations }
 
 @app.get('/translate/content/{task_id}')

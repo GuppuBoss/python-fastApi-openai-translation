@@ -7,6 +7,7 @@ import os
 load_dotenv()
 
 OPEN_API_KEY = os.getenv('OPENAI_API_KEY')
+openai.api_key = OPEN_API_KEY
 
 def perform_translation(task_id: int, text: str, languages:list,  db:Session):
   translations = {}
@@ -34,5 +35,4 @@ def perform_translation(task_id: int, text: str, languages:list,  db:Session):
     except Exception as e:
       print(f"Unexpected error: {e}")
       translations[lang] = f"Unexpected error: {e}"
-
   update_translation_task(db, task_id, translations)   
